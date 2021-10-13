@@ -29,6 +29,12 @@ while current_game:
         if event.type == pygame.QUIT:
             current_game = False
 
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_a]:
+        character.move_left(5)
+    if keys[pygame.K_d]:
+        character.move_right(5)
+
     # display control
     screen.fill(bg_colour)
     group.draw(screen)

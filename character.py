@@ -8,3 +8,11 @@ class Character(pygame.sprite.Sprite):
         self.image = pygame.image.load(os.path.join('assets', 'blue_alien.png'))
         self.rect = self.image.get_rect()
         self.rect.center = pos
+
+    def move_right(self, pixels):
+        self.rect.x += pixels
+
+    def move_left(self, pixels):
+        self.rect.x -= pixels
+
+    
