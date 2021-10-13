@@ -1,15 +1,15 @@
 import pygame, os
 
-# class to generate ground!
+''' this class is used to generate ground! '''
 class Ground(pygame.sprite.Sprite):
     
     # main
-    def __init__(self, pos):
+    def __init__(self, position, image_name):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("assets", "test_ground_asset.png"))
-        self.rect = self.image.get_rect()
-        self.rect.center = pos
+        self.image = pygame.image.load(os.path.join("assets", image_name))
+        self.image_x = position[0]
+        self.image_y = position[1]
 
-    # render method
+    # method to render
     def render(self, screen):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
+        screen.blit(self.image, (self.image_x, self.image_y))
