@@ -29,9 +29,14 @@ while current_game:
         if event.type == pygame.QUIT:
             current_game = False
 
+    # movement for sprite
     keys = pygame.key.get_pressed()
+    
+    # going left
     if keys[pygame.K_a]:
         character.move_left(5)
+
+    # going right
     if keys[pygame.K_d]:
         character.move_right(5)
 
