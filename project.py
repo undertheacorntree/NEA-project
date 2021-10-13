@@ -1,17 +1,16 @@
 import pygame
 from character import Character
 
-# constants for resolution
-SCREEN_WIDTH = 1800
-SCREEN_HEIGHT = 1200
-
 # initiating pygame
 pygame.init()
 
-# screen info
+# game display info
 bg_colour = (77,166,255)
-screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
-pygame.display.set_caption("my project title")
+pygame.display.set_caption("my project title goes here")
+
+# setting game display to screen width
+info_object = pygame.display.Info()
+screen = pygame.display.set_mode((info_object.current_w, info_object.current_h))
 
 # sprite info
 character = Character((200,300))
@@ -30,7 +29,7 @@ while current_game:
         if event.type == pygame.QUIT:
             current_game = False
 
-    # screen control
+    # display control
     screen.fill(bg_colour)
     group.draw(screen)
     pygame.display.flip()
