@@ -4,9 +4,9 @@ import pygame, os
 class Character(pygame.sprite.Sprite):
 
     # main
-    def __init__(self, position):
-        super(Character, self).__init__()
-        self.image = pygame.image.load(os.path.join("assets", "blue_alien.png"))
+    def __init__(self, position, image_name):
+        super().__init__()
+        self.image = pygame.image.load(os.path.join("assets", image_name))
         self.rect = self.image.get_rect()
         self.rect.center = position
 
@@ -17,5 +17,3 @@ class Character(pygame.sprite.Sprite):
     # method to move sprite left
     def move_left(self, pixels):
         self.rect.x -= pixels
-
-    

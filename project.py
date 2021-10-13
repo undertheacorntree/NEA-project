@@ -2,20 +2,19 @@ import pygame
 from character import Character
 from ground import Ground
 
-# initiating pygame
-pygame.init()
+# initiatin
+pygame.init()   
 
-# game display info
+# important game info
 base_colour = (77,166,255) # might be removed later
-game_title = "my project title goes here"
 
 # setting game display to screen width
 info_object = pygame.display.Info()
 screen = pygame.display.set_mode((info_object.current_w, info_object.current_h))
-pygame.display.set_caption(game_title)
+pygame.display.set_caption("my project title goes here")
 
 # sprite info
-character = Character((300, 200))
+character = Character((300, 200), "alien_facing_right.png")
 foreground = Ground((700, 800), "test_foreground.png")
 background = Ground((0, 0), "test_background.png")
 sprite_group = pygame.sprite.RenderPlain()
