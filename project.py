@@ -2,7 +2,7 @@ import pygame
 from character import Character
 from ground import Ground
 
-# initiatin
+# initiating
 pygame.init()   
 
 # important game info
@@ -33,10 +33,10 @@ while current_game:
             current_game = False
 
     # display control
-    screen.fill(base_colour)      # filling in background
+    screen.fill(base_colour)    # filling in background
     background.render(screen)   # drawing on background
     foreground.render(screen)   # drawing on foreground
-    sprite_group.draw(screen)          # drawing on sprites
+    sprite_group.draw(screen)   # drawing on sprites
     
     # movement for sprite
     keys = pygame.key.get_pressed()
