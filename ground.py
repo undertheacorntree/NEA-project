@@ -6,6 +6,7 @@ class Ground(pygame.sprite.Sprite):
     # main
     def __init__(self, position, image_name):
         super().__init__()
+
         self.image = pygame.image.load(os.path.join("assets", image_name))
         self.image_x = position[0]
         self.image_y = position[1]
