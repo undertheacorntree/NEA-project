@@ -2,63 +2,57 @@ import pygame, os
 from character import Character
 from ground import Ground
 
-# initiating
-pygame.init()   
-
-# important game info
-base_colour = (77,166,255) # might be removed later
-picture = pygame.image.load(os.path.join("assets", "test_background.png"))
-
-# setting game display to screen width
-info_object = pygame.display.Info()
-resolution = (info_object.current_w, info_object.current_h)
-screen = pygame.display.set_mode(resolution)
+# important game information
+WINDOW_WIDTH, WINDOW_HEIGHT = 900, 500
+WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+BASE_COLOUR = (77,166,255)
+FPS = 60
+VELOCITY = 4
 
 pygame.display.set_caption("my project title goes here")
+player_img_path = "alien_facing_left.png"
+PLAYER_IMG = pygame.image.load(os.path.join("assets", player_img_path))
+PLAYER_WIDTH, PLAYER_HEIGHT = 66, 92
+GROUND_IMG = pygame.rect
 
-# sprite info
-character = Character((300, 200), "alien_facing_right.png")
-foreground = Ground((700, 800), "test_foreground.png")
-sprite_group = pygame.sprite.RenderPlain()
-sprite_group.add(character)
-
-# settings for game loop & fps
-clock = pygame.time.Clock()
-current_game = True
-
-# game loop
-while current_game:
-
-    # check events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            current_game = False
-
-    # display control
-    screen.fill(base_colour)    # filling in background
-
-    
-    # background = pygame.transform.scale(picture, (resolution))
-    
-    foreground.render(screen)   # drawing on foreground
-    sprite_group.draw(screen)   # drawing on sprites
-    
-    
-    # movement for sprite
-    keys = pygame.key.get_pressed()
-    
-    # going left
-    if keys[pygame.K_a]:
-        character.move_left(5)
-
-    # going right
-    if keys[pygame.K_d]:
-        character.move_right(5)
-
-    # updating screen
-    pygame.display.flip()
-    clock.tick(60)
+# creating screen
+def draw_window(player):
+    WINDOW.fill(BASE_COLOUR)
+    ####WINDOW.blit()
+    WINDOW.blit(PLAYER_IMG, (player.x, player.y))
     pygame.display.update()
 
-# close pygame
-pygame.quit()
+# movement
+def player_movement(keys_pressed, player):
+
+    # move left
+        if keys_pressed[pygame.K_a] and player.x - VELOCITY > 0:
+            player.x -= VELOCITY
+
+        # move right
+        if keys_pressed[pygame.K_d] and player.x + VELOCITY < (WINDOW_WIDTH - PLAYER_WIDTH) :
+            player.x += VELOCITY
+
+# main game loop
+def main():
+    player = pygame.Rect(700, 300, PLAYER_WIDTH, PLAYER_HEIGHT)
+
+    # event loop
+    clock = pygame.time.Clock()
+    current_game = True
+    while current_game:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                current_game = False
+
+        # checking for pressed keys
+        keys_pressed = pygame.key.get_pressed()
+        player_movement(keys_pressed, player)    
+
+        draw_window(player)
+    pygame.quit
+
+# runs file
+if __name__ == "__main__":
+    main()
