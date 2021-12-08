@@ -13,12 +13,10 @@ pygame.display.set_caption("my project title goes here")
 player_img_path = "alien_facing_left.png"
 PLAYER_IMG = pygame.image.load(os.path.join("assets", player_img_path))
 PLAYER_WIDTH, PLAYER_HEIGHT = 66, 92
-GROUND_IMG = pygame.rect
 
 # creating screen
 def draw_window(player):
     WINDOW.fill(BASE_COLOUR)
-    ####WINDOW.blit()
     WINDOW.blit(PLAYER_IMG, (player.x, player.y))
     pygame.display.update()
 
