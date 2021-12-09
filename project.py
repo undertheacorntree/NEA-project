@@ -17,29 +17,29 @@ sprite_group.add(player)
 # creating screen
 def draw_window(player):
     WINDOW.fill(BASE_COLOUR)
-    #WINDOW.blit(PLAYER_IMG, (player.x, player.y))
     sprite_group.update()
     sprite_group.draw(WINDOW)
     pygame.display.update()
 
 # main game loop
 def main():
-    #player = pygame.Rect(700, 300, PLAYER_WIDTH, PLAYER_HEIGHT)
 
     # event loop
     clock = pygame.time.Clock()
     current_game = True
+
     while current_game:
         clock.tick(FPS)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 current_game = False
 
         # checking for pressed keys
         keys_pressed = pygame.key.get_pressed()
-        # draw_window(player)
-        sprite_group.draw(WINDOW)
-        Player.moving(player, keys_pressed, WINDOW_WIDTH)    
+        player.move(keys_pressed, WINDOW)    
+
+        draw_window(player)
 
     pygame.quit()
 

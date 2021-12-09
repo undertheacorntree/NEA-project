@@ -11,12 +11,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
     
     # movement
-    def moving(self, player, keys_pressed, window_width):
+    def move(self, keys_pressed, window):
+
+        window_width = window.get_width()
+        window_height = window.get_height()
 
         # move left
-        if keys_pressed[pygame.K_a] and player.x - x_velocity > 0:
-            player.x -= x_velocity
+        if keys_pressed[pygame.K_a] and self.rect.x - self.x_velocity > 0:
+            self.rect.x -= self.x_velocity
 
         # move right
-        if keys_pressed[pygame.K_d] and player.x + x_velocity < (window_width - PLAYER_WIDTH) :
-            player.x += x_velocity
+        if keys_pressed[pygame.K_d] and self.rect.x + self.x_velocity < (window_width - self.rect.width):
+            self.rect.x += self.x_velocity
