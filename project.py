@@ -9,7 +9,8 @@ FPS = 60
 
 pygame.display.set_caption("my project title goes here")
 
-# sprite info
+# sprite info 
+# yikes
 sprite_group = pygame.sprite.Group()
 player = Player(4)
 sprite_group.add(player)
