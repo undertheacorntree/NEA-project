@@ -12,7 +12,7 @@ pygame.display.set_caption("my project title goes here")
 # sprite info 
 # yikes
 sprite_group = pygame.sprite.Group()
-player = Player(4)
+player = Player(4, 4)
 sprite_group.add(player)
 
 # creating screen
