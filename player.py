@@ -30,5 +30,5 @@ class Player(pygame.sprite.Sprite):
             self.rect.y-=self.y_vel
         
         # gravity
-        else:
+        elif self.rect.y + self.y_vel < (window_height - self.rect.height):
             self.rect.y += self.y_vel # half this later for slow fall speed, could be doubled for boots
