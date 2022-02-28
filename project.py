@@ -1,7 +1,8 @@
+# yikes chief we've got a problem on our hands
 import pygame, os
 from player import Player
 
-# important game information
+# IMPORTANT GAME INFOMATION
 WINDOW_WIDTH, WINDOW_HEIGHT = 900, 500
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 BASE_COLOUR = (77,166,255)
@@ -9,23 +10,25 @@ FPS = 60
 
 pygame.display.set_caption("my project title goes here")
 
-# sprite info 
-# yikes
+# SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
-player = Player(4, 4)
+
+# this passes in the image, x-velocity, y-velocity
+# starting postions (x,y), jump height
+player = Player("alien_facing_left.png", 5, 0, 100, 100, 15)
 sprite_group.add(player)
 
-# creating screen
-def draw_window(player):
+# CREATE SCREEN
+def draw_window():
     WINDOW.fill(BASE_COLOUR)
     sprite_group.update()
     sprite_group.draw(WINDOW)
     pygame.display.update()
 
-# main game loop
+# MAIN GAME LOOP
 def main():
 
-    # event loop
+    # EVENT LOOP
     clock = pygame.time.Clock()
     current_game = True
 
@@ -40,10 +43,10 @@ def main():
         keys_pressed = pygame.key.get_pressed()
         player.move(keys_pressed, WINDOW)    
 
-        draw_window(player)
+        draw_window()
 
     pygame.quit()
 
-# runs file
+# RUNS FILE
 if __name__ == "__main__":
     main()
