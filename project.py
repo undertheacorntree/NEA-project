@@ -1,6 +1,7 @@
 # yikes chief we've got a problem on our hands
 import pygame, os
 from player import Player
+from podium import Podium
 
 # IMPORTANT GAME INFOMATION
 pygame.display.set_caption("my project title goes here")
@@ -10,8 +11,8 @@ BASE_COLOUR = (77,166,255)
 FPS = 60
 
 # PLATFORM INFORMATION
-# creates rect at (x pos/y pos) (width/height)
-first_platform = pygame.Rect((200,900),(130,30))
+platform_a = Podium("platform.png", 200, 900)
+platform_b = Podium("platform.png", 300, 800)
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
@@ -21,13 +22,17 @@ sprite_group = pygame.sprite.Group()
 player = Player("alien_facing_left.png", 10, 0, 100, 100, 15)
 sprite_group.add(player)
 
+# COLLISIONS
+
 # CREATE SCREEN
 def draw_window():
+
     # whooo background whooooo
     WINDOW.fill(BASE_COLOUR)
 
-    # this draws the first (white) platform to the window
-    pygame.draw.rect(WINDOW, (255,255,255), first_platform)
+    # this draws the first platform to the window
+    WINDOW.blit(platform_a.image, (platform_a.rect.x, platform_a.rect.y))
+    WINDOW.blit(platform_b.image, (platform_b.rect.x, platform_b.rect.y))
 
     # sprite group tings
     sprite_group.update()
