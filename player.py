@@ -27,14 +27,14 @@ class Player(pygame.sprite.Sprite):
         self.max_jump = max_jump
     
     # MOVEMENT
-    def move(self, keys_pressed, window, platform_a_rect, platform_a_rect_top, platform_a_rect_bottom, platform_a_rect_right, platform_a_rect_left):
+    def move(self, keys_pressed, window, platforms, platform_a_rect, platform_a_rect_top, platform_a_rect_bottom, platform_a_rect_right, platform_a_rect_left):
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
         window_height = window.get_height()
 
         # adds a tolerance for additional pixels
-        # higher col tol to account for change in (falling) y-velocity
+        # higher col tol to account for to change in (falling) y-velocity
         COLLISION_TOLERANCE_X = 10
         COLLISION_TOLERANCE_Y = 20
 

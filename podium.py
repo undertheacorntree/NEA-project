@@ -21,3 +21,6 @@ class Podium:
         self.rect_bottom = self.rect.bottom
         self.rect_right = self.rect.right
         self.rect_left = self.rect.left
+
+    def get_rect_attribute_list(self):
+        return [self.rect, self.rect_top, self.rect_bottom, self.rect_left, self.rect_right]
