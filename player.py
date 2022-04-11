@@ -34,7 +34,7 @@ class Player(pygame.sprite.Sprite):
         window_height = window.get_height()
 
         # adds a tolerance for additional pixels
-        # higher col tol due to change in (falling) y-velocity
+        # higher col tol to account for change in (falling) y-velocity
         COLLISION_TOLERANCE_X = 10
         COLLISION_TOLERANCE_Y = 20
 
@@ -79,10 +79,13 @@ class Player(pygame.sprite.Sprite):
             # increase the vertical position of the sprite on screen
             self.y_vel -= self.max_jump
 
+            # if a collision with a platform
             if self.rect.colliderect(platform_a_rect):
-                # try 'and self.y_vel < 0' next to tol
 
+                # if top of player collides with bottom of platform
                 if abs(platform_a_rect_bottom - self.rect.top) < COLLISION_TOLERANCE_Y:
+                    
+                    # set player to jump only as high as other platform
                     self.rect.y = platform_a_rect_bottom + self.rect.height 
 
             # change state to falling
@@ -117,42 +120,20 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.colliderect(platform_a_rect):
                     
                     # if bottom of player collides with top of platform
-                    if abs(platform_a_rect_top - self.rect.bottom) < (COLLISION_TOLERANCE_Y) and self.y_vel > 0:
+                    if abs(platform_a_rect_top - self.rect.bottom) < COLLISION_TOLERANCE_Y:
                         
+                        # set player on platform and reset velocity
                         self.rect.y = platform_a_rect_top - self.rect.height
                         self.falling = False
                         self.on_platform = True
                         self.y_vel = 0
-
-        if self.on_platform == True:
-            if (self.rect.left < platform_a_rect_left) or (self.rect.right > platform_a_rect_right) :
-                self.falling = True
-                self.on_platform = False
-
-        ######### half this later for slow fall speed, could be doubled for boots
         
-'''
-        if self.rect.colliderect(platform_a_rect):           
-            # if platform right side position and player left side position are within collision (<10px) distance
-            if abs(platform_a_rect_right - self.rect.right) < collision_tolerance + self.rect.width:
-                self.rect.x += self.x_vel
-            
-            # if platform left side position and player right side position are within collision (<10px) distance
-            if abs(platform_a_rect_left - self.rect.right) < collision_tolerance:
-                self.rect.x -= self.x_vel
+        # PLATFORM COLLISION VERIFICATION
+        if self.on_platform == True:
 
-            if abs(platform_a_rect_top - self.rect.bottom) < (collision_tolerance + 5) and self.y_vel > 0:
-                print("ayo")
-                #self.y_vel = 0
-                #self.falling = False
-                self.rect.y = self.rect.y + platform_a_rect_top
+            # if player outside of left/right boundaries
+            if (self.rect.right < platform_a_rect_left) or (self.rect.left > platform_a_rect_right):
                 
-#if abs(platform_a_rect_bottom - self.rect.top) < collision_tolerance and self.y_vel < 0:
-                #self.rect.y += 1
-
-            
-            
-                
-                #self.y_vel *= -1
-                #print("ayo")
-'''
+                # re-introduce gravity
+                self.on_platform = False
+                self.falling = True

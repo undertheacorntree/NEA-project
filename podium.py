@@ -12,8 +12,6 @@ class Podium:
         # platform rect
         self.rect = self.image.get_rect()
 
-        
-
         # rect positions
         self.rect.x = x_pos
         self.rect.y = y_pos
