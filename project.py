@@ -12,8 +12,8 @@ FPS = 60
 
 # PLATFORM INFORMATION
 # passes in image, x-pos, y-pos
-platform_a = Podium("platform.png", 200, 900)
-platform_b = Podium("platform.png", 300, 800)
+platform_a = Podium("platform.png", 200, 950)
+platform_b = Podium("platform.png", 300, 850)
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
@@ -56,7 +56,7 @@ def main():
 
         # checking for pressed keys
         keys_pressed = pygame.key.get_pressed()
-        player.move(keys_pressed, WINDOW, platform_a)    
+        player.move(keys_pressed, WINDOW, platform_a.rect, platform_a.rect_top, platform_a.rect_bottom, platform_a.rect_right, platform_a.rect_left)    
 
         # whoo game !!!!!
         draw_window()
