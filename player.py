@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.max_jump = max_jump
     
     # MOVEMENT
-    def move(self, keys_pressed, window, platforms, platform_a_rect, platform_a_rect_top, platform_a_rect_bottom, platform_a_rect_right, platform_a_rect_left):
+    def move(self, keys_pressed, window, platforms):
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -46,14 +46,18 @@ class Player(pygame.sprite.Sprite):
             # move the sprite to the left
             self.rect.x -= self.x_vel
 
-            # if a collision with a platform
-            if self.rect.colliderect(platform_a_rect):           
+            for platform in platforms:
+
+                # if a collision with a platform
+                if self.rect.colliderect(getattr(platform, 'rect')):           
                 
-                # if platform right side position and player left side position are within collision (<10px) distance
-                if abs(platform_a_rect_right - self.rect.left) < COLLISION_TOLERANCE_X + self.rect.width:
+                    # if platform right side position and player left side position are within collision (<10px) distance
+                    if abs(getattr(platform, 'rect_right') - self.rect.left) < COLLISION_TOLERANCE_X + self.rect.width:
                     
-                    # then move back to previous position
-                    self.rect.x += self.x_vel
+                        # then move back to previous position
+                        self.rect.x += self.x_vel
+
+                        break
 
         # MOVE RIGHT
         # if the pressed key, the position of the sprite and the distance it will move
@@ -63,14 +67,18 @@ class Player(pygame.sprite.Sprite):
             # move the sprite to the right
             self.rect.x += self.x_vel
 
-            # if a collision with a platform
-            if self.rect.colliderect(platform_a_rect):           
+            for platform in platforms:
+
+                # if a collision with a platform
+                if self.rect.colliderect(getattr(platform, 'rect')):           
             
-                # if platform left side position and player right side position are within collision (<10px) distance
-                if abs(platform_a_rect_left - self.rect.right) < COLLISION_TOLERANCE_X:
+                    # if platform left side position and player right side position are within collision (<10px) distance
+                    if abs(getattr(platform, 'rect_left') - self.rect.right) < COLLISION_TOLERANCE_X:
                     
-                    # then move back to previous position
-                    self.rect.x -= self.x_vel
+                        # then move back to previous position
+                        self.rect.x -= self.x_vel
+
+                        break
 
         # JUMP
         # if [w] is pressed and not falling
@@ -79,18 +87,22 @@ class Player(pygame.sprite.Sprite):
             # increase the vertical position of the sprite on screen
             self.y_vel -= self.max_jump
 
-            # if a collision with a platform
-            if self.rect.colliderect(platform_a_rect):
+            for platform in platforms:
 
-                # if top of player collides with bottom of platform
-                if abs(platform_a_rect_bottom - self.rect.top) < COLLISION_TOLERANCE_Y:
+                # if a collision with a platform
+                if self.rect.colliderect(getattr(platform, 'rect')):
+
+                    # if top of player collides with bottom of platform
+                    if abs(getattr(platform, 'rect_bottom') - self.rect.top) < COLLISION_TOLERANCE_Y:
                     
-                    # set player to jump only as high as other platform
-                    self.rect.y = platform_a_rect_bottom + self.rect.height 
+                        # set player to jump only as high as other platform
+                        self.rect.y = getattr(platform, 'rect_bottom') + self.rect.height 
 
-            # change state to falling
-            self.falling = True
-            self.on_platform = False
+                        break
+
+                # change state to falling
+                self.falling = True
+                self.on_platform = False
 
         # GRAVITY
         if self.falling == True:
@@ -116,24 +128,30 @@ class Player(pygame.sprite.Sprite):
                 # change the vertical position of the sprite on screen
                 self.rect.y += self.y_vel
 
-                # if a collision with a platform
-                if self.rect.colliderect(platform_a_rect):
+                for platform in platforms:
+
+                    # if a collision with a platform
+                    if self.rect.colliderect(getattr(platform, 'rect')):
                     
-                    # if bottom of player collides with top of platform
-                    if abs(platform_a_rect_top - self.rect.bottom) < COLLISION_TOLERANCE_Y:
+                        # if bottom of player collides with top of platform
+                        if abs(getattr(platform, 'rect_top') - self.rect.bottom) < COLLISION_TOLERANCE_Y:
                         
-                        # set player on platform and reset velocity
-                        self.rect.y = platform_a_rect_top - self.rect.height
-                        self.falling = False
-                        self.on_platform = True
-                        self.y_vel = 0
+                            # set player on platform and reset velocity
+                            self.rect.y = getattr(platform, 'rect_top') - self.rect.height
+                            self.falling = False
+                            self.on_platform = True
+                            self.y_vel = 0
+
+                            break
         
         # PLATFORM COLLISION VERIFICATION
         if self.on_platform == True:
 
-            # if player outside of left/right boundaries
-            if (self.rect.right < platform_a_rect_left) or (self.rect.left > platform_a_rect_right):
+            for platform in platforms: 
+            
+                # if player outside of left/right boundaries
+                if (self.rect.right < getattr(platform, 'rect_left')) or (self.rect.left > getattr(platform, 'rect_right')):
                 
-                # re-introduce gravity
-                self.on_platform = False
-                self.falling = True
+                    # re-introduce gravity
+                    self.on_platform = False
+                    self.falling = True
