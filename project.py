@@ -11,6 +11,7 @@ BASE_COLOUR = (77,166,255)
 FPS = 60
 
 # PLATFORM INFORMATION
+# passes in image, x-pos, y-pos
 platform_a = Podium("platform.png", 200, 900)
 platform_b = Podium("platform.png", 300, 800)
 
@@ -21,8 +22,6 @@ sprite_group = pygame.sprite.Group()
 # starting postions (x,y), jump height
 player = Player("alien_facing_left.png", 10, 0, 100, 100, 15)
 sprite_group.add(player)
-
-# COLLISIONS
 
 # CREATE SCREEN
 def draw_window():
@@ -57,7 +56,7 @@ def main():
 
         # checking for pressed keys
         keys_pressed = pygame.key.get_pressed()
-        player.move(keys_pressed, WINDOW)    
+        player.move(keys_pressed, WINDOW, platform_a)    
 
         # whoo game !!!!!
         draw_window()

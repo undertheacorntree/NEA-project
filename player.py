@@ -26,7 +26,7 @@ class Player(pygame.sprite.Sprite):
         self.max_jump = max_jump
     
     # MOVEMENT
-    def move(self, keys_pressed, window):
+    def move(self, keys_pressed, window, platform_a):
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -35,15 +35,17 @@ class Player(pygame.sprite.Sprite):
         # MOVE LEFT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        # move the sprite to the left
         if keys_pressed[pygame.K_a] and self.rect.x - self.x_vel > 0:
+                         
+            # move the sprite to the left
             self.rect.x -= self.x_vel
 
         # MOVE RIGHT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        # move the sprite to the right
         if keys_pressed[pygame.K_d] and self.rect.x + self.x_vel < (window_width - self.rect.width):
+          
+            # move the sprite to the right
             self.rect.x += self.x_vel
 
         # JUMP
@@ -81,3 +83,8 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y += self.y_vel
 
                 ######### half this later for slow fall speed, could be doubled for boots
+        
+        if self.rect.colliderect(platform_a):
+            if platform_a.rect.top - self.rect.bottom == 0:
+                self.y_vel *= -1
+                print("ayo")
