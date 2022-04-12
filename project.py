@@ -13,15 +13,15 @@ FPS = 60
 
 # PLATFORM INFORMATION
 # passes in image, x-pos, y-pos
-platform_a = Podium("platform.png", 200, 950)
-platform_b = Podium("platform.png", 500, 850)
-platform_c = Podium("platform.png", 200, 750)
-platform_d = Podium("platform.png", 500, 650)
-platform_e = Podium("platform.png", 200, 550)
-platform_f = Podium("platform.png", 500, 450)
-platform_g = Podium("platform.png", 200, 350)
-platform_h = Podium("platform.png", 500, 250)
-platform_i = Podium("platform.png", 200, 150)
+platform_a = Podium("platform.png", 300, 950)
+platform_b = Podium("platform.png", 600, 850)
+platform_c = Podium("platform.png", 300, 750)
+platform_d = Podium("platform.png", 600, 650)
+platform_e = Podium("platform.png", 300, 550)
+platform_f = Podium("platform.png", 600, 450)
+platform_g = Podium("platform.png", 300, 350)
+platform_h = Podium("platform.png", 600, 250)
+platform_i = Podium("platform.png", 300, 150)
 platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h, platform_i] 
 
 # ITEM INFORMATION
