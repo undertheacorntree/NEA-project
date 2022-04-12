@@ -21,7 +21,7 @@ sprite_group = pygame.sprite.Group()
 
 # this passes in the image, x-velocity, y-velocity
 # starting postions (x,y), jump height
-player = Player("alien_facing_left.png", 10, 0, 100, 100, 20)
+player = Player("alien_facing_left.png", 10, 0, 100, 100, 15)
 sprite_group.add(player)
 
 # CREATE SCREEN
@@ -44,14 +44,18 @@ def draw_window():
 # MAIN GAME LOOP
 def main():
 
-    # EVENT LOOP
+    # game loop info
     clock = pygame.time.Clock()
     current_game = True
 
+    # GAME LOOP
     while current_game:
         clock.tick(FPS)
 
+        # EVENT LOOP
         for event in pygame.event.get():
+
+            # quit game event
             if event.type == pygame.QUIT:
                 current_game = False
 
@@ -62,6 +66,7 @@ def main():
         # whoo game !!!!!
         draw_window()
 
+    # quit game
     pygame.quit()
 
 # RUNS FILE

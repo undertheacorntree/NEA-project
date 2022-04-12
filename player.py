@@ -24,9 +24,11 @@ class Player(pygame.sprite.Sprite):
 
         # gravity and jumping
         self.falling = True
+        self.max_jump = max_jump
+
+        # platform info
         self.on_platform = False
         self.current_platform = None
-        self.max_jump = max_jump
     
     # MOVEMENT
     def move(self, keys_pressed, window, platforms):
@@ -38,7 +40,7 @@ class Player(pygame.sprite.Sprite):
         # adds a tolerance for additional pixels
         # higher col tol to account for to change in (falling) y-velocity
         COLLISION_TOLERANCE_X = 10
-        COLLISION_TOLERANCE_Y = 25
+        COLLISION_TOLERANCE_Y = 20
 
         # MOVE LEFT
         # if the pressed key, the position of the sprite and the distance it will move
@@ -48,6 +50,7 @@ class Player(pygame.sprite.Sprite):
             # move the sprite to the left
             self.rect.x -= self.x_vel
 
+            # check each platform
             for platform in platforms:
 
                 # if a collision with a platform
@@ -59,6 +62,7 @@ class Player(pygame.sprite.Sprite):
                         # then move back to previous position
                         self.rect.x += self.x_vel
 
+                        # stop checking when platform found
                         break
 
         # MOVE RIGHT
@@ -69,6 +73,7 @@ class Player(pygame.sprite.Sprite):
             # move the sprite to the right
             self.rect.x += self.x_vel
 
+            # check each platform
             for platform in platforms:
 
                 # if a collision with a platform
@@ -79,7 +84,8 @@ class Player(pygame.sprite.Sprite):
                     
                         # then move back to previous position
                         self.rect.x -= self.x_vel
-
+                        
+                        # stop checking when platform found
                         break
 
         # JUMP
@@ -89,6 +95,7 @@ class Player(pygame.sprite.Sprite):
             # increase the vertical position of the sprite on screen
             self.y_vel -= self.max_jump
 
+            # check each platform
             for platform in platforms:
 
                 # if a collision with a platform
@@ -100,6 +107,7 @@ class Player(pygame.sprite.Sprite):
                         # set player to jump only as high as other platform
                         self.rect.y = getattr(platform, 'rect_bottom') + self.rect.height 
 
+                        # stop checking when platform found
                         break
 
             # change state to falling
@@ -137,16 +145,17 @@ class Player(pygame.sprite.Sprite):
                     
                         # if bottom of player collides with top of platform
                         if abs(getattr(platform, 'rect_top') - self.rect.bottom) < COLLISION_TOLERANCE_Y:
-
-                            print("ayo")
                         
                             # set player on platform and reset velocity
                             self.rect.y = getattr(platform, 'rect_top') - self.rect.height
                             self.falling = False
-                            self.on_platform = True
-                            self.current_platform = platform
                             self.y_vel = 0
 
+                            # current platform checks relative x-position to activate gravity
+                            self.on_platform = True
+                            self.current_platform = platform
+
+                            # stop checking when platform found
                             break
 
         # PLATFORM COLLISION VERIFICATION
@@ -155,8 +164,6 @@ class Player(pygame.sprite.Sprite):
             # if player outside of left/right boundaries
             if (self.rect.right < getattr(self.current_platform, 'rect_left')) or (self.rect.left > getattr(self.current_platform, 'rect_right')):
                     
-                print('auo')
-                
                 # re-introduce gravity
                 self.on_platform = False
                 self.falling = True
