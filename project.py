@@ -1,7 +1,8 @@
 # yikes chief we've got a problem on our hands
 import pygame, os
-from player import Player
 from podium import Podium
+from pickup import Pickup
+from player import Player
 
 # IMPORTANT GAME INFOMATION
 pygame.display.set_caption("my project title goes here")
@@ -13,8 +14,16 @@ FPS = 60
 # PLATFORM INFORMATION
 # passes in image, x-pos, y-pos
 platform_a = Podium("platform.png", 200, 950)
-platform_b = Podium("platform.png", 300, 850)
-platforms = [platform_a, platform_b] 
+platform_b = Podium("platform.png", 500, 850)
+platform_c = Podium("platform.png", 200, 750)
+platform_d = Podium("platform.png", 500, 650)
+platforms = [platform_a, platform_b, platform_c, platform_d] 
+
+# ITEM INFORMATION
+# passes in x-pos, y-pos
+item_a = Pickup(platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 10)
+item_b = Pickup(platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 10)
+items = [item_a, item_b]
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
@@ -30,9 +39,13 @@ def draw_window():
     # whooo background whooooo
     WINDOW.fill(BASE_COLOUR)
 
-    # this draws the first platform to the window
-    WINDOW.blit(platform_a.image, (platform_a.rect.x, platform_a.rect.y))
-    WINDOW.blit(platform_b.image, (platform_b.rect.x, platform_b.rect.y))
+    # this draws the platforms to the window
+    for platform in platforms:
+        WINDOW.blit(platform.image, (platform.rect.x, platform.rect.y))
+
+    # this draws the items to the window
+    for item in items:
+        WINDOW.blit(item.image, (item.rect.x, item.rect.y))
 
     # sprite group tings
     sprite_group.update()

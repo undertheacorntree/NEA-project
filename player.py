@@ -1,4 +1,3 @@
-from ast import Break
 import pygame, os
 
 ''' this class is used to generate the player! '''
@@ -31,7 +30,7 @@ class Player(pygame.sprite.Sprite):
         self.current_platform = None
     
     # MOVEMENT
-    def move(self, keys_pressed, window, platforms):
+    def move(self, keys_pressed, can_jump, window, platforms):
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -90,7 +89,7 @@ class Player(pygame.sprite.Sprite):
 
         # JUMP
         # if [w] is pressed and not falling
-        if keys_pressed[pygame.K_w] and self.falling == False:
+        if (keys_pressed[pygame.K_w]) and (self.falling == False) and (can_jump):
 
             # increase the vertical position of the sprite on screen
             self.y_vel -= self.max_jump
