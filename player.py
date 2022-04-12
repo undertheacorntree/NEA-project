@@ -25,12 +25,11 @@ class Player(pygame.sprite.Sprite):
         # gravity and jumping
         self.falling = True
         self.on_platform = False
+        self.current_platform = None
         self.max_jump = max_jump
     
     # MOVEMENT
     def move(self, keys_pressed, window, platforms):
-        print(self.falling, self.on_platform)
-
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -39,7 +38,7 @@ class Player(pygame.sprite.Sprite):
         # adds a tolerance for additional pixels
         # higher col tol to account for to change in (falling) y-velocity
         COLLISION_TOLERANCE_X = 10
-        COLLISION_TOLERANCE_Y = 20
+        COLLISION_TOLERANCE_Y = 25
 
         # MOVE LEFT
         # if the pressed key, the position of the sprite and the distance it will move
@@ -107,7 +106,6 @@ class Player(pygame.sprite.Sprite):
             self.falling = True
             self.on_platform = False
 
-
         # GRAVITY
         if self.falling == True:
 
@@ -146,20 +144,19 @@ class Player(pygame.sprite.Sprite):
                             self.rect.y = getattr(platform, 'rect_top') - self.rect.height
                             self.falling = False
                             self.on_platform = True
+                            self.current_platform = platform
                             self.y_vel = 0
 
                             break
-        '''
+
         # PLATFORM COLLISION VERIFICATION
         if self.on_platform == True:
 
-            for platform in platforms: 
-            
-                # if player outside of left/right boundaries
-                if (self.rect.right < getattr(platform, 'rect_left')) or (self.rect.left > getattr(platform, 'rect_right')):
+            # if player outside of left/right boundaries
+            if (self.rect.right < getattr(self.current_platform, 'rect_left')) or (self.rect.left > getattr(self.current_platform, 'rect_right')):
+                    
+                print('auo')
                 
-                    # re-introduce gravity
-                    self.on_platform = False
-                    self.falling = True
-
-                    break'''
+                # re-introduce gravity
+                self.on_platform = False
+                self.falling = True

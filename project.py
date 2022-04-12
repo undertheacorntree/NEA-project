@@ -21,7 +21,7 @@ sprite_group = pygame.sprite.Group()
 
 # this passes in the image, x-velocity, y-velocity
 # starting postions (x,y), jump height
-player = Player("alien_facing_left.png", 10, 0, 100, 100, 15)
+player = Player("alien_facing_left.png", 10, 0, 100, 100, 20)
 sprite_group.add(player)
 
 # CREATE SCREEN
