@@ -29,6 +29,8 @@ class Player(pygame.sprite.Sprite):
     
     # MOVEMENT
     def move(self, keys_pressed, window, platforms):
+        print(self.falling, self.on_platform)
+
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -137,6 +139,8 @@ class Player(pygame.sprite.Sprite):
                     
                         # if bottom of player collides with top of platform
                         if abs(getattr(platform, 'rect_top') - self.rect.bottom) < COLLISION_TOLERANCE_Y:
+
+                            print("ayo")
                         
                             # set player on platform and reset velocity
                             self.rect.y = getattr(platform, 'rect_top') - self.rect.height
@@ -145,7 +149,7 @@ class Player(pygame.sprite.Sprite):
                             self.y_vel = 0
 
                             break
-        
+        '''
         # PLATFORM COLLISION VERIFICATION
         if self.on_platform == True:
 
@@ -158,4 +162,4 @@ class Player(pygame.sprite.Sprite):
                     self.on_platform = False
                     self.falling = True
 
-                    break
+                    break'''
