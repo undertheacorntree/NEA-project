@@ -1,3 +1,4 @@
+from ast import Break
 import pygame, os
 
 ''' this class is used to generate the player! '''
@@ -100,9 +101,10 @@ class Player(pygame.sprite.Sprite):
 
                         break
 
-                # change state to falling
-                self.falling = True
-                self.on_platform = False
+            # change state to falling
+            self.falling = True
+            self.on_platform = False
+
 
         # GRAVITY
         if self.falling == True:
@@ -155,3 +157,5 @@ class Player(pygame.sprite.Sprite):
                     # re-introduce gravity
                     self.on_platform = False
                     self.falling = True
+
+                    break
