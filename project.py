@@ -17,13 +17,19 @@ platform_a = Podium("platform.png", 200, 950)
 platform_b = Podium("platform.png", 500, 850)
 platform_c = Podium("platform.png", 200, 750)
 platform_d = Podium("platform.png", 500, 650)
-platforms = [platform_a, platform_b, platform_c, platform_d] 
+platform_e = Podium("platform.png", 200, 550)
+platform_f = Podium("platform.png", 500, 450)
+platform_g = Podium("platform.png", 200, 350)
+platform_h = Podium("platform.png", 500, 250)
+platform_i = Podium("platform.png", 200, 150)
+platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h, platform_i] 
 
 # ITEM INFORMATION
 # passes in x-pos, y-pos
 item_a = Pickup(platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 10)
 item_b = Pickup(platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 10)
-items = [item_a, item_b]
+item_c = Pickup(platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 10)
+items = [item_a, item_b, item_c]
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
