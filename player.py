@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.current_platform = None
     
     # MOVEMENT
-    def move(self, keys_pressed, window, platforms):
+    def move(self, keys_pressed, window, platforms, items):
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -168,5 +168,7 @@ class Player(pygame.sprite.Sprite):
                 self.on_platform = False
                 self.falling = True
 
-        # ITEM PICKUP
-        
+            # ITEM PICKUP
+            for item in items:
+                if self.rect.colliderect(getattr(item, 'rect')):
+                    setattr(item, 'item_collision', True)

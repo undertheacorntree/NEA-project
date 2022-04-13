@@ -26,10 +26,10 @@ platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platfor
 
 # ITEM INFORMATION
 # passes in x-pos, y-pos
-item_a = Pickup('heavy_boots.png', platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 10)
-item_b = Pickup('speedy_boots.png', platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 10)
-item_c = Pickup('exploding_flower.png', platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 10)
-items = [item_a, item_b, item_c]
+item_heavy_boots = Pickup('heavy_boots.png', platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
+item_speedy_boots = Pickup('speedy_boots.png', platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
+item_exploding_flower = Pickup('exploding_flower.png', platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
+items = [item_heavy_boots, item_speedy_boots, item_exploding_flower]
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
@@ -51,6 +51,9 @@ def draw_window():
 
     # this draws the items to the window
     for item in items:
+        if item.item_collision == True:
+            items.remove(item)
+        
         WINDOW.blit(item.image, (item.rect.x, item.rect.y))
 
     # sprite group tings
@@ -80,7 +83,7 @@ def main():
 
         # checking for pressed keys
         keys_pressed = pygame.key.get_pressed()
-        player.move(keys_pressed, WINDOW, platforms)    
+        player.move(keys_pressed, WINDOW, platforms, items)    
 
         # whoo game !!!!!
         draw_window()

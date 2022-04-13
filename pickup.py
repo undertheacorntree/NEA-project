@@ -14,3 +14,6 @@ class Pickup:
         # rect positions
         self.rect.x = x_pos
         self.rect.y = y_pos
+
+        # item collision
+        self.item_collision = False
