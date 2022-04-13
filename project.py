@@ -51,7 +51,7 @@ def draw_window():
 
     # this draws the items to the window
     for item in items:
-        if item.item_collision == True:
+        if item.item_collected == True:
             items.remove(item)
         
         WINDOW.blit(item.image, (item.rect.x, item.rect.y))

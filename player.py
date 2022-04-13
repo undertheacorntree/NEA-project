@@ -171,4 +171,4 @@ class Player(pygame.sprite.Sprite):
             # ITEM PICKUP
             for item in items:
                 if self.rect.colliderect(getattr(item, 'rect')):
-                    setattr(item, 'item_collision', True)
+                    setattr(item, 'item_collected', True)

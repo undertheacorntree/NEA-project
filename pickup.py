@@ -7,6 +7,9 @@ class Pickup:
 
         # image used for item
         self.image = pygame.image.load(os.path.join("assets", img_name))
+        
+        # item ID
+        self.item_id = img_name[:-4]
 
         # platform rect
         self.rect = self.image.get_rect()
@@ -16,4 +19,4 @@ class Pickup:
         self.rect.y = y_pos
 
         # item collision
-        self.item_collision = False
+        self.item_collected = False
