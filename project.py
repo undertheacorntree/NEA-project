@@ -26,9 +26,9 @@ platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platfor
 
 # ITEM INFORMATION
 # passes in x-pos, y-pos
-item_a = Pickup(platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 10)
-item_b = Pickup(platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 10)
-item_c = Pickup(platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 10)
+item_a = Pickup('heavy_boots.png', platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 10)
+item_b = Pickup('speedy_boots.png', platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 10)
+item_c = Pickup('exploding_flower.png', platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 10)
 items = [item_a, item_b, item_c]
 
 # SPRITE INFORMATION

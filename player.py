@@ -8,7 +8,8 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # image used for sprite
-        self.image = pygame.image.load(os.path.join("assets", img_name))
+        self.image_name = img_name
+        self.image = pygame.image.load(os.path.join("assets", self.image_name))
 
         # sprite rect
         self.rect = self.image.get_rect()
@@ -45,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
         if keys_pressed[pygame.K_a] and self.rect.x - self.x_vel > 0:
-                         
+
             # move the sprite to the left
             self.rect.x -= self.x_vel
 
@@ -166,3 +167,6 @@ class Player(pygame.sprite.Sprite):
                 # re-introduce gravity
                 self.on_platform = False
                 self.falling = True
+
+        # ITEM PICKUP
+        
