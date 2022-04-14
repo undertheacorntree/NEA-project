@@ -54,10 +54,10 @@ class Player(pygame.sprite.Sprite):
             for platform in platforms:
 
                 # if a collision with a platform
-                if self.rect.colliderect(getattr(platform, 'rect')):           
+                if self.rect.colliderect(platform.rect):           
                 
                     # if platform right side position and player left side position are within collision (<10px) distance
-                    if abs(getattr(platform, 'rect_right') - self.rect.left) < COLLISION_TOLERANCE_X + self.rect.width:
+                    if abs((platform.rect_right) - self.rect.left) < COLLISION_TOLERANCE_X + self.rect.width:
                     
                         # then move back to previous position
                         self.rect.x += self.x_vel
@@ -77,10 +77,10 @@ class Player(pygame.sprite.Sprite):
             for platform in platforms:
 
                 # if a collision with a platform
-                if self.rect.colliderect(getattr(platform, 'rect')):           
+                if self.rect.colliderect(platform.rect):           
             
                     # if platform left side position and player right side position are within collision (<10px) distance
-                    if abs(getattr(platform, 'rect_left') - self.rect.right) < COLLISION_TOLERANCE_X:
+                    if abs((platform.rect_left) - self.rect.right) < COLLISION_TOLERANCE_X:
                     
                         # then move back to previous position
                         self.rect.x -= self.x_vel
@@ -99,13 +99,13 @@ class Player(pygame.sprite.Sprite):
             for platform in platforms:
 
                 # if a collision with a platform
-                if self.rect.colliderect(getattr(platform, 'rect')):
+                if self.rect.colliderect(platform.rect):
 
                     # if top of player collides with bottom of platform
-                    if abs(getattr(platform, 'rect_bottom') - self.rect.top) < COLLISION_TOLERANCE_Y:
+                    if abs(platform.rect_bottom - self.rect.top) < COLLISION_TOLERANCE_Y:
                     
                         # set player to jump only as high as other platform
-                        self.rect.y = getattr(platform, 'rect_bottom') + self.rect.height 
+                        self.rect.y = platform.rect_bottom + self.rect.height 
 
                         # stop checking when platform found
                         break
@@ -141,13 +141,13 @@ class Player(pygame.sprite.Sprite):
                 for platform in platforms:
 
                     # if a collision with a platform
-                    if self.rect.colliderect(getattr(platform, 'rect')):
+                    if self.rect.colliderect(platform.rect):
                     
                         # if bottom of player collides with top of platform
-                        if abs(getattr(platform, 'rect_top') - self.rect.bottom) < COLLISION_TOLERANCE_Y:
+                        if abs((platform.rect_top) - self.rect.bottom) < COLLISION_TOLERANCE_Y:
                         
                             # set player on platform and reset velocity
-                            self.rect.y = getattr(platform, 'rect_top') - self.rect.height
+                            self.rect.y = platform.rect_top - self.rect.height
                             self.falling = False
                             self.y_vel = 0
 
@@ -162,7 +162,7 @@ class Player(pygame.sprite.Sprite):
         if self.on_platform == True:
 
             # if player outside of left/right boundaries
-            if (self.rect.right < getattr(self.current_platform, 'rect_left')) or (self.rect.left > getattr(self.current_platform, 'rect_right')):
+            if ((self.rect.right < self.current_platform.rect_left) or (self.rect.left > self.current_platform.rect_right)):
                     
                 # re-introduce gravity
                 self.on_platform = False
@@ -170,5 +170,14 @@ class Player(pygame.sprite.Sprite):
 
             # ITEM PICKUP
             for item in items:
-                if self.rect.colliderect(getattr(item, 'rect')):
-                    setattr(item, 'item_collected', True)
+                if self.rect.colliderect(item.rect):
+                    item.item_collected = True
+
+                    if item.item_id == 'heavy_boots':
+                        pass
+
+                    if item.item_id == 'speedy_boots':
+                        pass
+
+                    if item.item_id == 'exploding_flower':
+                        pass
