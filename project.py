@@ -29,8 +29,9 @@ platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platfor
 item_heavy_boots = Pickup('heavy_boots.png', False, platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
 item_speedy_boots = Pickup('speedy_boots.png', False, platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
 item_exploding_flower = Pickup('exploding_flower.png', False, platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
-item_no_item = Pickup('no_item.png', True, 0, 0)
-items = [item_heavy_boots, item_speedy_boots, item_exploding_flower]
+item_no_item = Pickup('no_item.png', True, 10, 10)
+items_available = [item_heavy_boots, item_speedy_boots, item_exploding_flower]
+items_gained = [item_no_item]
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
@@ -50,12 +51,18 @@ def draw_window():
     for platform in platforms:
         WINDOW.blit(platform.image, (platform.rect.x, platform.rect.y))
 
-    # this draws the items to the window
-    for item in items:
-        if item.item_collected == True:
-            items.remove(item)
+    # this draws the items available to the window
+    for item in items_available:
+        if item.ITEM_ID != 'no_item':
+            if item.item_collected == True:
+                items_available.remove(item)
         
-        WINDOW.blit(item.image, (item.rect.x, item.rect.y))
+            WINDOW.blit(item.image, (item.rect.x, item.rect.y))
+    
+    # this draws the items gained to the window
+    for item in items_gained:
+        if item.item_selected == True:
+            WINDOW.blit(item.image, (item.rect.x, item.rect.y))
 
     # sprite group tings
     sprite_group.update()
@@ -84,7 +91,8 @@ def main():
 
         # checking for pressed keys
         keys_pressed = pygame.key.get_pressed()
-        player.move(keys_pressed, WINDOW, platforms, items)    
+        player.move(keys_pressed, WINDOW, platforms, items_available, items_gained)
+        player.item_select(keys_pressed, items_gained)
 
         # whoo game !!!!!
         draw_window()

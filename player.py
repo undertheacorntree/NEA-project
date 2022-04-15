@@ -37,7 +37,7 @@ class Player(pygame.sprite.Sprite):
         self.current_platform = None
     
     # MOVEMENT
-    def move(self, keys_pressed, window, platforms, items):
+    def move(self, keys_pressed, window, platforms, items_available, items_gained):
 
         # these are to verify the screen boundaries
         window_width = window.get_width()
@@ -170,29 +170,38 @@ class Player(pygame.sprite.Sprite):
                 self.falling = True
 
             # ITEM PICKUP
-            for item in items:
-                if self.rect.colliderect(item.rect):
-                    item.item_collected = True
+            for item in items_available:
+                if item.ITEM_ID != 'no_item':
+                    if self.rect.colliderect(item.rect):
+                        item.item_collected = True
 
-                    # heavy boots attributes
-                    if item.ITEM_ID == 'heavy_boots':
-                        self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 0.5
-                        self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
-                        self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+                        # heavy boots attributes
+                        if item.ITEM_ID == 'heavy_boots':
+                            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 0.5
+                            self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
+                            self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+                            items_gained = items_gained.append(item)
 
-                    # speedy boots attributes
-                    if item.ITEM_ID == 'speedy_boots':
-                        self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 1.5
-                        self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
-                        self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+                        # speedy boots attributes
+                        if item.ITEM_ID == 'speedy_boots':
+                            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 1.5
+                            self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
+                            self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
                     
-                    # exploding flower attributes
-                    if item.ITEM_ID == 'exploding_flower':
-                        self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
-                        self.current_x_vel = self.DEFAULT_X_VEL
-                        self.current_y_vel = self.DEFAULT_Y_VEL
+                        # exploding flower attributes
+                        if item.ITEM_ID == 'exploding_flower':
+                            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
+                            self.current_x_vel = self.DEFAULT_X_VEL
+                            self.current_y_vel = self.DEFAULT_Y_VEL
 
-                    # change col tol for SPEED
-                    for platform in platforms:
-                        platform.current_collision_tolerance_x = platform.DEFAULT_COLLISION_TOLERANCE_X * (self.current_player_weight)
-                        platform.current_collision_tolerance_y = platform.DEFAULT_COLLISION_TOLERANCE_Y * (self.current_player_weight)
+                        # change col tol for SPEED
+                        for platform in platforms:
+                            platform.current_collision_tolerance_x = platform.DEFAULT_COLLISION_TOLERANCE_X * (self.current_player_weight)
+                            platform.current_collision_tolerance_y = platform.DEFAULT_COLLISION_TOLERANCE_Y * (self.current_player_weight)
+
+    # ITEM SELECTION
+    def item_select(self, keys_pressed, items_gained):
+        if (keys_pressed[pygame.K_q]):
+            for item in items_gained:
+                if len(items_gained) == 1:
+                    item.item_selected = True
