@@ -1,5 +1,3 @@
-from email.policy import default
-from logging.config import DEFAULT_LOGGING_CONFIG_PORT
 import pygame, os
 
 ''' this class is used to generate the player! '''
