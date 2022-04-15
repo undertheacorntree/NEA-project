@@ -1,10 +1,12 @@
+from email.policy import default
+from logging.config import DEFAULT_LOGGING_CONFIG_PORT
 import pygame, os
 
 ''' this class is used to generate the player! '''
 class Player(pygame.sprite.Sprite):
 
     # MAIN
-    def __init__(self, img_name, x_vel, y_vel, x_pos, y_pos, max_jump):
+    def __init__(self, img_name, x_vel, y_vel, x_pos, y_pos, max_jump, player_weight):
         super().__init__()
 
         # image used for sprite
@@ -19,8 +21,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = y_pos
 
         # velocities
-        self.x_vel = x_vel
-        self.y_vel = y_vel
+        self.DEFAULT_X_VEL = x_vel
+        self.DEFAULT_Y_VEL = y_vel
+        self.current_x_vel = x_vel
+        self.current_y_vel = y_vel
+
+        # weighting
+        self.DEFAULT_PLAYER_WEIGHT = player_weight
+        self.current_player_weight = player_weight
 
         # gravity and jumping
         self.falling = True
@@ -37,18 +45,13 @@ class Player(pygame.sprite.Sprite):
         window_width = window.get_width()
         window_height = window.get_height()
 
-        # adds a tolerance for additional pixels
-        # higher col tol to account for to change in (falling) y-velocity
-        COLLISION_TOLERANCE_X = 10
-        COLLISION_TOLERANCE_Y = 20
-
         # MOVE LEFT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        if keys_pressed[pygame.K_a] and self.rect.x - self.x_vel > 0:
+        if keys_pressed[pygame.K_a] and self.rect.x - self.current_x_vel > 0:
 
             # move the sprite to the left
-            self.rect.x -= self.x_vel
+            self.rect.x -= self.current_x_vel
 
             # check each platform
             for platform in platforms:
@@ -57,10 +60,10 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.colliderect(platform.rect):           
                 
                     # if platform right side position and player left side position are within collision (<10px) distance
-                    if abs((platform.rect_right) - self.rect.left) < COLLISION_TOLERANCE_X + self.rect.width:
+                    if abs((platform.rect_right) - self.rect.left) < platform.current_collision_tolerance_x + self.rect.width:
                     
                         # then move back to previous position
-                        self.rect.x += self.x_vel
+                        self.rect.x += self.current_x_vel
 
                         # stop checking when platform found
                         break
@@ -68,10 +71,10 @@ class Player(pygame.sprite.Sprite):
         # MOVE RIGHT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        if keys_pressed[pygame.K_d] and self.rect.x + self.x_vel < (window_width - self.rect.width):
+        if keys_pressed[pygame.K_d] and self.rect.x + self.current_x_vel < (window_width - self.rect.width):
           
             # move the sprite to the right
-            self.rect.x += self.x_vel
+            self.rect.x += self.current_x_vel
 
             # check each platform
             for platform in platforms:
@@ -80,10 +83,10 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.colliderect(platform.rect):           
             
                     # if platform left side position and player right side position are within collision (<10px) distance
-                    if abs((platform.rect_left) - self.rect.right) < COLLISION_TOLERANCE_X:
+                    if abs((platform.rect_left) - self.rect.right) < platform.current_collision_tolerance_x:
                     
                         # then move back to previous position
-                        self.rect.x -= self.x_vel
+                        self.rect.x -= self.current_x_vel
                         
                         # stop checking when platform found
                         break
@@ -93,7 +96,7 @@ class Player(pygame.sprite.Sprite):
         if (keys_pressed[pygame.K_w]) and (self.falling == False):
 
             # increase the vertical position of the sprite on screen
-            self.y_vel -= self.max_jump
+            self.current_y_vel -= self.max_jump
 
             # check each platform
             for platform in platforms:
@@ -102,7 +105,7 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.colliderect(platform.rect):
 
                     # if top of player collides with bottom of platform
-                    if abs(platform.rect_bottom - self.rect.top) < COLLISION_TOLERANCE_Y:
+                    if abs(platform.rect_bottom - self.rect.top) < platform.current_collision_tolerance_y:
                     
                         # set player to jump only as high as other platform
                         self.rect.y = platform.rect_bottom + self.rect.height 
@@ -120,7 +123,7 @@ class Player(pygame.sprite.Sprite):
             # if the height, the fall, and the velocity increment are larger
             # than the lower boundary of the window height, plus the sprite height
             # stop the sprite from breaching the lower part of the screen
-            if (self.rect.y + self.y_vel + 1) > (window_height - self.rect.height):
+            if (self.rect.y + self.current_y_vel + self.current_player_weight) > (window_height - self.rect.height):
                 
                 # set the sprite onto the ground
                 self.rect.y = window_height - self.rect.height
@@ -129,14 +132,14 @@ class Player(pygame.sprite.Sprite):
                 self.falling = False
 
                 # reset the velocity
-                self.y_vel = 0
+                self.current_y_vel = 0
 
             else:
                 # decrease the velocity
-                self.y_vel += 1
+                self.current_y_vel += self.current_player_weight
 
                 # change the vertical position of the sprite on screen
-                self.rect.y += self.y_vel
+                self.rect.y += self.current_y_vel
 
                 for platform in platforms:
 
@@ -144,12 +147,12 @@ class Player(pygame.sprite.Sprite):
                     if self.rect.colliderect(platform.rect):
                     
                         # if bottom of player collides with top of platform
-                        if abs((platform.rect_top) - self.rect.bottom) < COLLISION_TOLERANCE_Y:
+                        if abs((platform.rect_top) - self.rect.bottom) < platform.current_collision_tolerance_y:
                         
                             # set player on platform and reset velocity
                             self.rect.y = platform.rect_top - self.rect.height
                             self.falling = False
-                            self.y_vel = 0
+                            self.current_y_vel = 0
 
                             # current platform checks relative x-position to activate gravity
                             self.on_platform = True
@@ -173,11 +176,25 @@ class Player(pygame.sprite.Sprite):
                 if self.rect.colliderect(item.rect):
                     item.item_collected = True
 
-                    if item.item_id == 'heavy_boots':
-                        pass
+                    # heavy boots attributes
+                    if item.ITEM_ID == 'heavy_boots':
+                        self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 0.5
+                        self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
+                        self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
 
-                    if item.item_id == 'speedy_boots':
-                        pass
+                    # speedy boots attributes
+                    if item.ITEM_ID == 'speedy_boots':
+                        self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 1.5
+                        self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
+                        self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+                    
+                    # exploding flower attributes
+                    if item.ITEM_ID == 'exploding_flower':
+                        self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
+                        self.current_x_vel = self.DEFAULT_X_VEL
+                        self.current_y_vel = self.DEFAULT_Y_VEL
 
-                    if item.item_id == 'exploding_flower':
-                        pass
+                    # change col tol for SPEED
+                    for platform in platforms:
+                        platform.current_collision_tolerance_x = platform.DEFAULT_COLLISION_TOLERANCE_X * (self.current_player_weight)
+                        platform.current_collision_tolerance_y = platform.DEFAULT_COLLISION_TOLERANCE_Y * (self.current_player_weight)

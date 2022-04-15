@@ -21,14 +21,15 @@ platform_e = Podium("platform.png", 300, 550)
 platform_f = Podium("platform.png", 600, 450)
 platform_g = Podium("platform.png", 300, 350)
 platform_h = Podium("platform.png", 600, 250)
-platform_i = Podium("platform.png", 300, 150)
+platform_i = Podium("platform.png", 100, 850)
 platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h, platform_i] 
 
 # ITEM INFORMATION
 # passes in x-pos, y-pos
-item_heavy_boots = Pickup('heavy_boots.png', platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
-item_speedy_boots = Pickup('speedy_boots.png', platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
-item_exploding_flower = Pickup('exploding_flower.png', platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
+item_heavy_boots = Pickup('heavy_boots.png', False, platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
+item_speedy_boots = Pickup('speedy_boots.png', False, platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
+item_exploding_flower = Pickup('exploding_flower.png', False, platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
+item_no_item = Pickup('no_item.png', True, 0, 0)
 items = [item_heavy_boots, item_speedy_boots, item_exploding_flower]
 
 # SPRITE INFORMATION
@@ -36,7 +37,7 @@ sprite_group = pygame.sprite.Group()
 
 # this passes in the image, x-velocity, y-velocity
 # starting postions (x,y), jump height
-player = Player("alien_facing_left.png", 10, 0, 100, 100, 15)
+player = Player("alien_facing_left.png", 10, 0, 100, 100, 15, 1)
 sprite_group.add(player)
 
 # CREATE SCREEN
