@@ -18,7 +18,6 @@ class Pickup:
         # item information
         self.ITEM_ID = img_name[:-4]
         self.item_default = item_default
-        self.item_collected = False
         self.item_selected = False
 
         # sets default item to selected

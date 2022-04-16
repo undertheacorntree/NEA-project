@@ -37,11 +37,11 @@ class Player(pygame.sprite.Sprite):
         self.current_platform = None
     
     # MOVEMENT
-    def move(self, keys_pressed, window, platforms, items_available, items_gained):
+    def move(self, keys_pressed, WINDOW, MENU_X, MENU_Y, platforms, items_available, items_gained):
 
         # these are to verify the screen boundaries
-        window_width = window.get_width()
-        window_height = window.get_height()
+        WINDOW_WIDTH = WINDOW.get_width()
+        WINDOW_HEIGHT = WINDOW.get_height()
 
         # MOVE LEFT
         # if the pressed key, the position of the sprite and the distance it will move
@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
         # MOVE RIGHT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        if keys_pressed[pygame.K_d] and self.rect.x + self.current_x_vel < (window_width - self.rect.width):
+        if keys_pressed[pygame.K_d] and self.rect.x + self.current_x_vel < (WINDOW_WIDTH - self.rect.width):
           
             # move the sprite to the right
             self.rect.x += self.current_x_vel
@@ -121,10 +121,10 @@ class Player(pygame.sprite.Sprite):
             # if the height, the fall, and the velocity increment are larger
             # than the lower boundary of the window height, plus the sprite height
             # stop the sprite from breaching the lower part of the screen
-            if (self.rect.y + self.current_y_vel + self.current_player_weight) > (window_height - self.rect.height):
+            if (self.rect.y + self.current_y_vel + self.current_player_weight) > (WINDOW_HEIGHT - self.rect.height):
                 
                 # set the sprite onto the ground
-                self.rect.y = window_height - self.rect.height
+                self.rect.y = WINDOW_HEIGHT - self.rect.height
 
                 # it is no longer falling
                 self.falling = False
@@ -171,37 +171,68 @@ class Player(pygame.sprite.Sprite):
 
             # ITEM PICKUP
             for item in items_available:
-                if item.ITEM_ID != 'no_item':
-                    if self.rect.colliderect(item.rect):
-                        item.item_collected = True
 
-                        # heavy boots attributes
-                        if item.ITEM_ID == 'heavy_boots':
-                            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 0.5
-                            self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
-                            self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
-                            items_gained = items_gained.append(item)
+                # if an item is picked up
+                if self.rect.colliderect(item.rect):
 
-                        # speedy boots attributes
-                        if item.ITEM_ID == 'speedy_boots':
-                            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 1.5
-                            self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
-                            self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
-                    
-                        # exploding flower attributes
-                        if item.ITEM_ID == 'exploding_flower':
-                            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
-                            self.current_x_vel = self.DEFAULT_X_VEL
-                            self.current_y_vel = self.DEFAULT_Y_VEL
+                    # remove from avaliable items
+                    items_available.remove(item)
 
-                        # change col tol for SPEED
-                        for platform in platforms:
-                            platform.current_collision_tolerance_x = platform.DEFAULT_COLLISION_TOLERANCE_X * (self.current_player_weight)
-                            platform.current_collision_tolerance_y = platform.DEFAULT_COLLISION_TOLERANCE_Y * (self.current_player_weight)
+                    # set new positions
+                    item.rect.x = MENU_X
+                    item.rect.y = MENU_Y
+
+                    # unselect other items
+                    for other_item in items_gained:
+                        other_item.item_selected = False
+
+                    # select new item
+                    item.item_selected = True
+
+                    # move to front of list
+                    items_gained.insert(0, item)
 
     # ITEM SELECTION
-    def item_select(self, keys_pressed, items_gained):
-        if (keys_pressed[pygame.K_q]):
-            for item in items_gained:
-                if len(items_gained) == 1:
-                    item.item_selected = True
+    def item_select(self, items_gained, platforms):
+        
+        # unselect first item
+        items_gained[0].item_selected = False
+
+        # add it to the end of the list
+        items_gained.append(items_gained[0])
+
+        # remove first item
+        items_gained.remove(items_gained[0])
+
+        # select new first item
+        items_gained[0].item_selected = True            
+    
+        # ADD ATTRIBUTES
+        # no item attributes
+        if items_gained[0].ITEM_ID == 'no_item':
+            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
+            self.current_x_vel = self.DEFAULT_X_VEL
+            self.current_y_vel = self.DEFAULT_Y_VEL
+
+        # heavy boots attributes
+        if items_gained[0].ITEM_ID == 'heavy_boots':
+            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 0.5
+            self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
+            self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+
+        # speedy boots attributes
+        if items_gained[0].ITEM_ID == 'speedy_boots':
+            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 1.5
+            self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
+            self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+                    
+        # exploding flower attributes
+        if items_gained[0].ITEM_ID == 'exploding_flower':
+            self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
+            self.current_x_vel = self.DEFAULT_X_VEL
+            self.current_y_vel = self.DEFAULT_Y_VEL
+
+        # change col tol for SPEED
+        for platform in platforms:
+            platform.current_collision_tolerance_x = platform.DEFAULT_COLLISION_TOLERANCE_X * (self.current_player_weight)
+            platform.current_collision_tolerance_y = platform.DEFAULT_COLLISION_TOLERANCE_Y * (self.current_player_weight)

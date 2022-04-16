@@ -7,6 +7,7 @@ from player import Player
 # IMPORTANT GAME INFOMATION
 pygame.display.set_caption("my project title goes here")
 WINDOW_WIDTH, WINDOW_HEIGHT = 1000, 1000
+MENU_X, MENU_Y = 10, 10
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 BASE_COLOUR = (77,166,255)
 FPS = 60
@@ -29,7 +30,7 @@ platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platfor
 item_heavy_boots = Pickup('heavy_boots.png', False, platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
 item_speedy_boots = Pickup('speedy_boots.png', False, platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
 item_exploding_flower = Pickup('exploding_flower.png', False, platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
-item_no_item = Pickup('no_item.png', True, 10, 10)
+item_no_item = Pickup('no_item.png', True, MENU_X, MENU_Y)
 items_available = [item_heavy_boots, item_speedy_boots, item_exploding_flower]
 items_gained = [item_no_item]
 
@@ -52,12 +53,8 @@ def draw_window():
         WINDOW.blit(platform.image, (platform.rect.x, platform.rect.y))
 
     # this draws the items available to the window
-    for item in items_available:
-        if item.ITEM_ID != 'no_item':
-            if item.item_collected == True:
-                items_available.remove(item)
-        
-            WINDOW.blit(item.image, (item.rect.x, item.rect.y))
+    for item in items_available:        
+        WINDOW.blit(item.image, (item.rect.x, item.rect.y))
     
     # this draws the items gained to the window
     for item in items_gained:
@@ -89,11 +86,15 @@ def main():
             if event.type == pygame.QUIT:
                 current_game = False
 
+            # check for inventory item shuffle
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_q and (len(items_gained) > 1):
+                    player.item_select(items_gained, platforms)
+
         # checking for pressed keys
         keys_pressed = pygame.key.get_pressed()
-        player.move(keys_pressed, WINDOW, platforms, items_available, items_gained)
-        player.item_select(keys_pressed, items_gained)
-
+        player.move(keys_pressed, WINDOW, MENU_X, MENU_Y, platforms, items_available, items_gained)
+        
         # whoo game !!!!!
         draw_window()
 
