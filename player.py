@@ -7,8 +7,11 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, image, x_vel, y_vel, x_pos, y_pos, max_jump, player_weight):
         super().__init__()
 
+        # equipped items
+        self.player_item_ID = "_no_item"
+
         # image used for sprite
-        self.image_name = image + ".png"
+        self.image_name = image + self.player_item_ID + ".png"
         self.image = pygame.image.load(os.path.join("assets", self.image_name))
 
         # sprite rect
@@ -211,6 +214,10 @@ class Player(pygame.sprite.Sprite):
         items_gained[0].item_selected = True        
     
         # ADD ATTRIBUTES
+
+        # set player's currently equipped item id
+        self.player_item_ID = "_" + items_gained[0].ITEM_ID
+
         # no item attributes
         if items_gained[0].ITEM_ID == 'no_item':
             self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
@@ -247,9 +254,6 @@ class Player(pygame.sprite.Sprite):
     # PLAYER IMAGE
     def create_image(self, image_name):
         if self.falling == True:
-            image_name += "_falling.png"
-        
-        else:
-            image_name += ".png"
-        
-        self.image = pygame.image.load(os.path.join("assets", image_name))
+            image_name += "_falling"
+                
+        self.image = pygame.image.load(os.path.join("assets", (image_name + self.player_item_ID + ".png")))
