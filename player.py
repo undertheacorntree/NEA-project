@@ -4,11 +4,11 @@ import pygame, os
 class Player(pygame.sprite.Sprite):
 
     # MAIN
-    def __init__(self, image_names, x_vel, y_vel, x_pos, y_pos, max_jump, player_weight):
+    def __init__(self, image, x_vel, y_vel, x_pos, y_pos, max_jump, player_weight):
         super().__init__()
 
         # image used for sprite
-        self.image_name = image_names[0]
+        self.image_name = image + ".png"
         self.image = pygame.image.load(os.path.join("assets", self.image_name))
 
         # sprite rect
@@ -193,10 +193,10 @@ class Player(pygame.sprite.Sprite):
                     item.rect.y = MENU_Y
 
                     # set the attributes
-                    self.item_select(items_gained, platforms)
+                    self.select_item(items_gained, platforms)
 
     # ITEM SELECTION
-    def item_select(self, items_gained, platforms):
+    def select_item(self, items_gained, platforms):
         
         # unselect first item
         items_gained[0].item_selected = False
@@ -243,3 +243,13 @@ class Player(pygame.sprite.Sprite):
         for platform in platforms:
             platform.current_collision_tolerance_x = platform.DEFAULT_COLLISION_TOLERANCE_X * (self.current_player_weight)
             platform.current_collision_tolerance_y = platform.DEFAULT_COLLISION_TOLERANCE_Y * (self.current_player_weight)
+
+    # PLAYER IMAGE
+    def create_image(self, image_name):
+        if self.falling == True:
+            image_name += "_falling.png"
+        
+        else:
+            image_name += ".png"
+        
+        self.image = pygame.image.load(os.path.join("assets", image_name))

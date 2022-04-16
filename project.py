@@ -1,5 +1,4 @@
 # yikes chief we've got a problem on our hands
-from tkinter import image_names
 import pygame, os
 from podium import Podium
 from pickup import Pickup
@@ -9,6 +8,7 @@ from player import Player
 pygame.display.set_caption("my project title goes here")
 WINDOW_WIDTH, WINDOW_HEIGHT = 1000, 1000
 MENU_X, MENU_Y = 10, 10
+IMAGE_LEFT, IMAGE_RIGHT = "alien_left","alien_right"
 WINDOW = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 BASE_COLOUR = (77,166,255)
 FPS = 60
@@ -40,12 +40,10 @@ items_gained = [item_no_item]
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
-# stores images in order: left, right
-image_names = ["alien_left.png","alien_right.png"]
 
 # this passes in the image, x-velocity, y-velocity
 # starting postions (x,y), jump height
-player = Player(image_names, 10, 0, 100, 100, 15, 1)
+player = Player(IMAGE_LEFT, 10, 0, 100, 100, 15, 1)
 sprite_group.add(player)
 
 # CREATE SCREEN
@@ -97,7 +95,7 @@ def main():
 
                 # inventory access
                 if (event.key == pygame.K_q) and (len(items_gained) > 1):
-                    player.item_select(items_gained, platforms)
+                    player.select_item(items_gained, platforms)
                 
                 # jumping
                 if (event.key == pygame.K_w) and (player.falling == False):
@@ -106,12 +104,12 @@ def main():
                 # start moving left
                 if (event.key == pygame.K_a):
                     player.moving_left = True
-                    player.image = pygame.image.load(os.path.join("assets", image_names[0]))
+                    player.create_image(IMAGE_LEFT)
 
                 # start moving right
                 if (event.key == pygame.K_d):
                     player.moving_right = True
-                    player.image = pygame.image.load(os.path.join("assets", image_names[1]))
+                    player.create_image(IMAGE_RIGHT)
 
             # stop continued action
             if event.type == pygame.KEYUP:
