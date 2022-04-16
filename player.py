@@ -8,10 +8,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
 
         # equipped items
-        self.player_item_ID = "_no_item"
+        self.player_item_ID = "no_item"
 
         # image used for sprite
-        self.image_name = image + self.player_item_ID + ".png"
+        self.image_name = image + "_falling" + "_" + self.player_item_ID + ".png"
         self.image = pygame.image.load(os.path.join("assets", self.image_name))
 
         # sprite rect
@@ -216,7 +216,7 @@ class Player(pygame.sprite.Sprite):
         # ADD ATTRIBUTES
 
         # set player's currently equipped item id
-        self.player_item_ID = "_" + items_gained[0].ITEM_ID
+        self.player_item_ID = items_gained[0].ITEM_ID
 
         # no item attributes
         if items_gained[0].ITEM_ID == 'no_item':
@@ -253,7 +253,7 @@ class Player(pygame.sprite.Sprite):
 
     # PLAYER IMAGE
     def create_image(self, image_name):
-        if self.falling == True:
+        if (self.falling == True) and ((self.player_item_ID != "heavy_boots") and (self.player_item_ID != "speedy_boots")):
             image_name += "_falling"
                 
-        self.image = pygame.image.load(os.path.join("assets", (image_name + self.player_item_ID + ".png")))
+        self.image = pygame.image.load(os.path.join("assets", (image_name + "_" + self.player_item_ID + ".png")))

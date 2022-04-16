@@ -15,23 +15,26 @@ FPS = 60
 
 # PLATFORM INFORMATION
 # passes in image, x-pos, y-pos
-platform_a = Podium("platform_default.png", 300, 950)
-platform_b = Podium("platform_alt.png", 600, 850)
-platform_c = Podium("platform_default.png", 300, 750)
-platform_d = Podium("platform_alt.png", 600, 650)
-platform_e = Podium("platform_alt.png", 300, 550)
-platform_f = Podium("platform_default.png", 600, 450)
-platform_g = Podium("platform_default.png", 300, 350)
-platform_h = Podium("platform_special.png", 600, 250)
+platform_a = Podium("platform_special.png", 200, 200)
+platform_b = Podium("platform_alt.png", 625, 200)
+platform_c = Podium("platform_alt.png", 25, 400)
+platform_d = Podium("platform_default.png", 390, 950)
+platform_e = Podium("platform_default.png", 590, 850)
+platform_f = Podium("platform_default.png", 790, 750)
+platform_g = Podium("platform_default.png", 690, 650)
+platform_h = Podium("platform_default.png", 590, 550)
+platform_i = Podium("platform_default.png", 690, 450)
+platform_j = Podium("platform_default.png", 590, 350)
+platform_k = Podium("platform_default.png", 790, 300)
 
 # create list
-platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h] 
+platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h, platform_i, platform_j, platform_k] 
 
-# ITEM INFORMATION
+# ITEM INFORMATIONa
 # passes in x-pos, y-pos
-item_heavy_boots = Pickup('heavy_boots.png', False, platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
-item_speedy_boots = Pickup('speedy_boots.png', False, platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
-item_exploding_flower = Pickup('exploding_flower.png', False, platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
+item_heavy_boots = Pickup('heavy_boots.png', False, platform_a.rect.x + 50, platform_a.rect.y - platform_a.rect.height - 1)
+item_speedy_boots = Pickup('speedy_boots.png', False, platform_b.rect.x + 50, platform_b.rect.y - platform_b.rect.height - 1)
+item_exploding_flower = Pickup('exploding_flower.png', False, platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
 item_no_item = Pickup('no_item.png', True, MENU_X, MENU_Y)
 
 # create lists
@@ -42,8 +45,8 @@ items_gained = [item_no_item]
 sprite_group = pygame.sprite.Group()
 
 # this passes in the image, x-velocity, y-velocity
-# starting postions (x,y), jump height
-player = Player(IMAGE_LEFT, 10, 0, 100, 100, 15, 1)
+# starting postions (x,y), jump height, player weight
+player = Player(IMAGE_LEFT, 10, 0, 400, 0, 15, 1)
 sprite_group.add(player)
 
 # CREATE SCREEN
