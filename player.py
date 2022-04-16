@@ -4,11 +4,11 @@ import pygame, os
 class Player(pygame.sprite.Sprite):
 
     # MAIN
-    def __init__(self, img_name, x_vel, y_vel, x_pos, y_pos, max_jump, player_weight):
+    def __init__(self, image_names, x_vel, y_vel, x_pos, y_pos, max_jump, player_weight):
         super().__init__()
 
         # image used for sprite
-        self.image_name = img_name
+        self.image_name = image_names[0]
         self.image = pygame.image.load(os.path.join("assets", self.image_name))
 
         # sprite rect

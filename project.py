@@ -1,4 +1,5 @@
 # yikes chief we've got a problem on our hands
+from tkinter import image_names
 import pygame, os
 from podium import Podium
 from pickup import Pickup
@@ -39,10 +40,12 @@ items_gained = [item_no_item]
 
 # SPRITE INFORMATION
 sprite_group = pygame.sprite.Group()
+# stores images in order: left, right
+image_names = ["alien_left.png","alien_right.png"]
 
 # this passes in the image, x-velocity, y-velocity
 # starting postions (x,y), jump height
-player = Player("alien_facing_left.png", 10, 0, 100, 100, 15, 1)
+player = Player(image_names, 10, 0, 100, 100, 15, 1)
 sprite_group.add(player)
 
 # CREATE SCREEN
@@ -103,10 +106,12 @@ def main():
                 # start moving left
                 if (event.key == pygame.K_a):
                     player.moving_left = True
+                    player.image = pygame.image.load(os.path.join("assets", image_names[0]))
 
                 # start moving right
                 if (event.key == pygame.K_d):
                     player.moving_right = True
+                    player.image = pygame.image.load(os.path.join("assets", image_names[1]))
 
             # stop continued action
             if event.type == pygame.KEYUP:
