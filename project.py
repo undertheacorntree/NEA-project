@@ -5,7 +5,7 @@ from pickup import Pickup
 from player import Player
 
 # IMPORTANT GAME INFOMATION
-pygame.display.set_caption("my project title goes here")
+pygame.display.set_caption("Alien Exploration")
 WINDOW_WIDTH, WINDOW_HEIGHT = 1000, 1000
 MENU_X, MENU_Y = 10, 10
 IMAGE_LEFT, IMAGE_RIGHT = "alien_left","alien_right"
