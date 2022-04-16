@@ -21,9 +21,10 @@ platform_d = Podium("platform_alt.png", 600, 650)
 platform_e = Podium("platform_alt.png", 300, 550)
 platform_f = Podium("platform_default.png", 600, 450)
 platform_g = Podium("platform_default.png", 300, 350)
-platform_h = Podium("platform_default.png", 600, 250)
-platform_i = Podium("platform_alt.png", 100, 850)
-platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h, platform_i] 
+platform_h = Podium("platform_special.png", 600, 250)
+
+# create list
+platforms = [platform_a, platform_b, platform_c, platform_d, platform_e, platform_f, platform_g, platform_h] 
 
 # ITEM INFORMATION
 # passes in x-pos, y-pos
@@ -31,6 +32,8 @@ item_heavy_boots = Pickup('heavy_boots.png', False, platform_b.rect.x + 50, plat
 item_speedy_boots = Pickup('speedy_boots.png', False, platform_c.rect.x + 50, platform_c.rect.y - platform_c.rect.height - 1)
 item_exploding_flower = Pickup('exploding_flower.png', False, platform_f.rect.x + 50, platform_f.rect.y - platform_f.rect.height - 1)
 item_no_item = Pickup('no_item.png', True, MENU_X, MENU_Y)
+
+# create lists
 items_available = [item_heavy_boots, item_speedy_boots, item_exploding_flower]
 items_gained = [item_no_item]
 
@@ -86,14 +89,38 @@ def main():
             if event.type == pygame.QUIT:
                 current_game = False
 
-            # check for inventory item shuffle
+            # check for specific key presses
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_q and (len(items_gained) > 1):
-                    player.item_select(items_gained, platforms)
 
-        # checking for pressed keys
-        keys_pressed = pygame.key.get_pressed()
-        player.move(keys_pressed, WINDOW, MENU_X, MENU_Y, platforms, items_available, items_gained)
+                # inventory access
+                if (event.key == pygame.K_q) and (len(items_gained) > 1):
+                    player.item_select(items_gained, platforms)
+                
+                # jumping
+                if (event.key == pygame.K_w) and (player.falling == False):
+                    player.jumping = True
+
+                # start moving left
+                if (event.key == pygame.K_a):
+                    player.moving_left = True
+
+                # start moving right
+                if (event.key == pygame.K_d):
+                    player.moving_right = True
+
+            # stop continued action
+            if event.type == pygame.KEYUP:
+
+                # stop moving left
+                if (event.key == pygame.K_a):
+                    player.moving_left = False
+
+                # stop moving right
+                if (event.key == pygame.K_d):
+                    player.moving_right = False
+
+        # make the sprite move
+        player.move(WINDOW, MENU_X, MENU_Y, platforms, items_available, items_gained)
         
         # whoo game !!!!!
         draw_window()

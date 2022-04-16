@@ -20,6 +20,9 @@ class Pickup:
         self.item_default = item_default
         self.item_selected = False
 
+        # sets values upon pickup (True)
+        self.item_set_default = False
+
         # sets default item to selected
         if self.item_default == True:
             self.item_selected = True

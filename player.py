@@ -28,16 +28,22 @@ class Player(pygame.sprite.Sprite):
         self.DEFAULT_PLAYER_WEIGHT = player_weight
         self.current_player_weight = player_weight
 
+        # movement
+        self.moving_left = False
+        self.moving_right = False
+
         # gravity and jumping
         self.falling = True
-        self.max_jump = max_jump
+        self.jumping = False
+        self.DEFAULT_MAX_JUMP = max_jump
+        self.current_max_jump = max_jump
 
         # platform info
         self.on_platform = False
         self.current_platform = None
     
     # MOVEMENT
-    def move(self, keys_pressed, WINDOW, MENU_X, MENU_Y, platforms, items_available, items_gained):
+    def move(self, WINDOW, MENU_X, MENU_Y, platforms, items_available, items_gained):
 
         # these are to verify the screen boundaries
         WINDOW_WIDTH = WINDOW.get_width()
@@ -46,7 +52,7 @@ class Player(pygame.sprite.Sprite):
         # MOVE LEFT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        if keys_pressed[pygame.K_a] and self.rect.x - self.current_x_vel > 0:
+        if (self.moving_left == True) and (self.rect.x - self.current_x_vel > 0):
 
             # move the sprite to the left
             self.rect.x -= self.current_x_vel
@@ -69,7 +75,7 @@ class Player(pygame.sprite.Sprite):
         # MOVE RIGHT
         # if the pressed key, the position of the sprite and the distance it will move
         # is less than the window width and the sprite width
-        if keys_pressed[pygame.K_d] and self.rect.x + self.current_x_vel < (WINDOW_WIDTH - self.rect.width):
+        if (self.moving_right == True) and (self.rect.x + self.current_x_vel < (WINDOW_WIDTH - self.rect.width)):
           
             # move the sprite to the right
             self.rect.x += self.current_x_vel
@@ -91,10 +97,10 @@ class Player(pygame.sprite.Sprite):
 
         # JUMP
         # if [w] is pressed and not falling
-        if (keys_pressed[pygame.K_w]) and (self.falling == False):
+        if (self.jumping == True) and (self.falling == False):
 
             # increase the vertical position of the sprite on screen
-            self.current_y_vel -= self.max_jump
+            self.current_y_vel -= self.current_max_jump
 
             # check each platform
             for platform in platforms:
@@ -113,6 +119,7 @@ class Player(pygame.sprite.Sprite):
 
             # change state to falling
             self.falling = True
+            self.jumping = False
             self.on_platform = False
 
         # GRAVITY
@@ -178,19 +185,15 @@ class Player(pygame.sprite.Sprite):
                     # remove from avaliable items
                     items_available.remove(item)
 
+                    # append at second position
+                    items_gained.insert(1, item)
+
                     # set new positions
                     item.rect.x = MENU_X
                     item.rect.y = MENU_Y
 
-                    # unselect other items
-                    for other_item in items_gained:
-                        other_item.item_selected = False
-
-                    # select new item
-                    item.item_selected = True
-
-                    # move to front of list
-                    items_gained.insert(0, item)
+                    # set the attributes
+                    self.item_select(items_gained, platforms)
 
     # ITEM SELECTION
     def item_select(self, items_gained, platforms):
@@ -205,7 +208,7 @@ class Player(pygame.sprite.Sprite):
         items_gained.remove(items_gained[0])
 
         # select new first item
-        items_gained[0].item_selected = True            
+        items_gained[0].item_selected = True        
     
         # ADD ATTRIBUTES
         # no item attributes
@@ -213,24 +216,28 @@ class Player(pygame.sprite.Sprite):
             self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
             self.current_x_vel = self.DEFAULT_X_VEL
             self.current_y_vel = self.DEFAULT_Y_VEL
+            self.current_max_jump = self.DEFAULT_MAX_JUMP
 
         # heavy boots attributes
         if items_gained[0].ITEM_ID == 'heavy_boots':
             self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 0.5
             self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
             self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+            self.current_max_jump = 0
 
         # speedy boots attributes
         if items_gained[0].ITEM_ID == 'speedy_boots':
             self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT * 1.5
             self.current_x_vel = self.DEFAULT_X_VEL * self.current_player_weight
             self.current_y_vel = self.DEFAULT_Y_VEL * self.current_player_weight
+            self.current_max_jump = self.DEFAULT_MAX_JUMP
                     
         # exploding flower attributes
         if items_gained[0].ITEM_ID == 'exploding_flower':
             self.current_player_weight = self.DEFAULT_PLAYER_WEIGHT
             self.current_x_vel = self.DEFAULT_X_VEL
             self.current_y_vel = self.DEFAULT_Y_VEL
+            self.current_max_jump = self.DEFAULT_MAX_JUMP
 
         # change col tol for SPEED
         for platform in platforms:
